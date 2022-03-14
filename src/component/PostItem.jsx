@@ -13,6 +13,6 @@ const PostItem = (props) => {
             </div>
         </div>
     );
-};
+}
 
 export default PostItem;

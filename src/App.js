@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import styles from './styles/app.module.css';
-import PostItem from "./component/PostItem";
+import PostsList from "./component/PostsList";
+import MyButton from "./component/UI/Button/MyButton";
+import MyInput from "./component/UI/Input/MyInput";
 
 function App() {
     let [posts, setPosts] = useState([
@@ -11,11 +12,15 @@ function App() {
         {id:5,title:'Ruby',body:'Language of programming'},
     ]);
   return (
-    <div className={styles.App}>
-        {posts.map((post) => {
-            <PostItem post={post} />
-        })}
-    </div>
+      <>
+          <form>
+              <MyInput type={'text'} placeholder={'название поста'}/>
+              <MyInput type={'text'} placeholder={'Описание поста'}/>
+              <MyButton>Добавить пост</MyButton>
+          </form>
+        <PostsList posts={posts}
+                   title={'Список постов про языки програмирования'}/>
+      </>
   );
 }
 

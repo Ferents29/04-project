@@ -1,7 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import PostsList from "./component/PostsList";
-import MyButton from "./component/UI/Button/MyButton";
-import MyInput from "./component/UI/Input/MyInput";
+import PostForm from "./component/PostForm";
 
 function App() {
     const [posts, setPosts] = useState([
@@ -11,29 +10,14 @@ function App() {
         {id:4,title:'C++',body:'Language of programming'},
         {id:5,title:'Ruby',body:'Language of programming'},
     ]);
-    const [title, setTitle] = useState('');
-    const bodyTitlePost = useRef();
 
-    const addNewPost = (e) => {
-        e.preventDefault()
-        console.log(title)
-        console.log(bodyTitlePost.current.value)
+    const createPost = (newPost) => {
+        setPosts([...posts, newPost])
     }
 
   return (
       <>
-          <form>
-              {/*управляемый компонент.*/}
-              <MyInput type={'text'}
-                       value={title}
-                       onChange={e => setTitle(e.target.value)}
-                       placeholder={'название поста'}/>
-              {/*Неуправляемый компонент.*/}
-              <MyInput type={'text'}
-                       ref={bodyTitlePost}
-                       placeholder={'Описание поста'}/>
-              <MyButton onClick={addNewPost}>Добавить пост</MyButton>
-          </form>
+          <PostForm create={createPost}/>
         <PostsList posts={posts}
                    title={'Список постов про языки програмирования'}/>
       </>

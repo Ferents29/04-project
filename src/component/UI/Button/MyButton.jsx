@@ -3,7 +3,7 @@ import styles from './MyButton.module.css';
 
 const MyButton = ({children, ...props}) => {
     return (
-        <button className={styles.btn}>
+        <button {...props} className={styles.btn}>
             {children}
         </button>
     );

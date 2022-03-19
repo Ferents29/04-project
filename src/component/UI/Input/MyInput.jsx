@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './MyInput.module.css';
 
-const MyInput = React.forwardRef((props, ref) => {
+const MyInput = (props) => {
     return (
-        <input ref={ref} {...props} className={styles.MyInput}/>
+        <input {...props} className={styles.MyInput}/>
     );
-});
+};
 
 export default MyInput;

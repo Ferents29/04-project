@@ -7,8 +7,8 @@ const PostsList = ({posts, title}) => {
         <div>
             <h1 style={{textAlign:'center'}}>{title}</h1>
             <div className={styles.App}>
-                {posts.map((post) => {
-                    return <PostItem post={post} />
+                {posts.map((post, index) => {
+                    return <PostItem post={post} number={index + 1} />
                 })}
             </div>
         </div>

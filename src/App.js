@@ -14,12 +14,19 @@ function App() {
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
     }
+    const removePost = (post) => {
+        setPosts(posts.filter(p => p.id !== post.id))
+    }
 
   return (
       <>
           <PostForm create={createPost}/>
-        <PostsList posts={posts}
-                   title={'Список постов про языки програмирования'}/>
+          {posts.length !== 0
+              ? <PostsList posts={posts}
+                           remove={removePost}
+                           title={'Список постов про языки програмирования'}/>
+              : <h1 style={{textAlign:"center"}}>Посты отсутсвуют</h1>
+          }
       </>
   );
 }

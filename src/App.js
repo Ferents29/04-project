@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import PostsList from "./component/PostsList";
 import PostForm from "./component/PostForm";
 import MySelect from "./component/UI/select/MySelect";
+import MyInput from "./component/UI/Input/MyInput";
 
 function App() {
     const [posts, setPosts] = useState([
@@ -12,6 +13,26 @@ function App() {
         {id:5,title:'Ruby',body:'Language of programming'},
     ]);
     const [selectedSort, setSelectedSort] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+
+    /*function getSortedPosts() {
+        if (selectedSort) {
+            return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]));
+        }
+        return posts;
+    }
+    const sortedPosts = getSortedPosts()*/
+
+    const sortedPosts = useMemo(() => {
+        if (selectedSort) {
+            return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]));
+        }
+        return posts;
+    }, [selectedSort, posts]);
+
+    const sortedAndSearchedPosts = useMemo(() => {
+        return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery))
+    }, [searchQuery, sortedPosts]);
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
@@ -21,7 +42,6 @@ function App() {
     }
     const sortPosts = (sort) => {
         setSelectedSort(sort)
-        setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
     }
 
   return (
@@ -29,6 +49,10 @@ function App() {
           <PostForm create={createPost}/>
           <hr style={{margin: 15}} />
           <div>
+              <MyInput value={searchQuery}
+                       onChange={e => setSearchQuery(e.target.value)}
+                       placeholder={'Поиск...'} />
+              <br /><br/>
             <MySelect defaultValue={'Сортировка по: '}
                       options={[
                           {value: 'title', name: 'По названию'},
@@ -37,8 +61,8 @@ function App() {
                       value={selectedSort}
                       onChange={sortPosts} />
           </div>
-          {posts.length !== 0
-              ? <PostsList posts={posts}
+          {sortedAndSearchedPosts.length !== 0
+              ? <PostsList posts={sortedAndSearchedPosts}
                            remove={removePost}
                            title={'Список постов про языки програмирования'}/>
               : <h1 style={{textAlign:"center"}}>Посты отсутсвуют</h1>

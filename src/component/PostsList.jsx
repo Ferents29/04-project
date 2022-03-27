@@ -3,6 +3,10 @@ import styles from "../styles/app.module.css";
 import PostItem from "./PostItem";
 
 const PostsList = ({posts, title, remove}) => {
+    if ( !posts.length ){
+        return <h1 style={{textAlign:"center"}}>Посты отсутсвуют</h1>
+    }
+
     return (
         <div>
             <h1 style={{textAlign:'center'}}>{title}</h1>

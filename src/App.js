@@ -8,6 +8,8 @@ import {usePosts} from "./hooks/usePosts";
 import PostService from "./component/API/postService";
 import Loader from "./component/UI/Loader/Loader";
 import {useFetching} from "./hooks/useFetching";
+import {getPageCount, getPagesArray} from "./utils/pages";
+import Pagination from "./component/UI/Pagination/Pagination";
 
 function App() {
     const [posts, setPosts] = useState([
@@ -20,13 +22,19 @@ function App() {
     const [filter,setFilter] = useState({sort:'',query:''})
     const [modal, setModal] = useState(false)
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-    const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-        const posts = await PostService.getAll()
-        setPosts(posts)
+    const [totalPages, setTotalPages] = useState(0);
+    const [limit, setLimit] = useState(10)
+    const [page, setPage] = useState(1)
+
+    const [fetchPosts, isPostLoading, postError] = useFetching(async (limit, page) => {
+        const response = await PostService.getAll(limit, page)
+        setPosts(response.data)
+        const totalCount = response.headers['x-total-count'];
+        setTotalPages(getPageCount(totalCount, limit))
     })
 
     useEffect(() => {
-        fetchPosts()
+        fetchPosts(limit, page)
     },[] )
 
     const createPost = (newPost) => {
@@ -36,13 +44,19 @@ function App() {
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
     }
+    const changePage = (page) => {
+        setPage(page)
+        fetchPosts(limit, page)
+    }
 
   return (
       <div className={'App'}>
-          <button onClick={fetchPosts}>GET POST</button>
-          <MyButton onClick={() => setModal(true)}>
-              Добавить пост
-          </MyButton>
+          <div>
+              <button onClick={fetchPosts}>GET POST</button>
+              <MyButton onClick={() => setModal(true)}>
+                  Добавить пост
+              </MyButton>
+          </div>
 
           <MyModal visible={modal} setVisible={setModal}>
               <PostForm create={createPost}/>
@@ -51,12 +65,17 @@ function App() {
           <PostFilter filter={filter}
                       setFilter={setFilter}/>
           {postError && <h1>произошла ошыбка ${postError}</h1>}
-          {isPostLoading
-              ? <Loader />
-              : <PostsList posts={sortedAndSearchedPosts}
-                           remove={removePost}
-                           title={'Список постов про языки програмирования'}/>
-          }
+          <div>
+              {isPostLoading
+                  ? <Loader />
+                  : <PostsList posts={sortedAndSearchedPosts}
+                               remove={removePost}
+                               title={'Список постов про языки програмирования'}/>
+              }
+              <Pagination page={page}
+                          changePage={changePage}
+                          totalPages={totalPages}/>
+          </div>
       </div>
   );
 }

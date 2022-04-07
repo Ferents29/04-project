@@ -2,6 +2,11 @@
     display: flex;
     margin: 10px;
 }
+#root{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .post{
     border: red solid 2px;
     padding: 10px
@@ -37,4 +42,16 @@
     border: 3px solid orange;
     font-weight: bold;
     background-color: gold;
+}
+.navbar{
+    border: 1px solid red;
+    height: 50px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+}
+.navbar__links{
+    margin-left:auto;
 }

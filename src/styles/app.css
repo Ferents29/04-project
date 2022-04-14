@@ -11,6 +11,10 @@
     border: red solid 2px;
     padding: 10px
 }
+.post_btns{
+    display: flex;
+    padding: 10px
+}
 .remove-btn {
     margin-right: 0.5rem;
 }

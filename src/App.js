@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {
-    Routes, BrowserRouter,
+    BrowserRouter,
 } from "react-router-dom";
 import Navbar from "./component/UI/Navbar/Navbar";
 import AppRouter from "./component/AppRouter";

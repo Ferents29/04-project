@@ -11,6 +11,7 @@ import Loader from "../component/UI/Loader/Loader";
 import PostsList from "../component/PostsList";
 import Pagination from "../component/UI/Pagination/Pagination";
 import {useObserver} from "../hooks/useObserver";
+import MySelect from "../component/UI/select/MySelect";
 
 function Posts() {
     const [posts, setPosts] = useState([
@@ -42,7 +43,7 @@ function Posts() {
 
     useEffect(() => {
         fetchPosts(limit, page)
-    },[page] )
+    },[page, limit] )
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
@@ -59,7 +60,23 @@ function Posts() {
     return (
         <div className={'App'}>
             <div>
-                <button onClick={fetchPosts}>GET POST</button>
+                <div style={{marginBottom:20}}>
+                    <span>Количество постов на странице</span>
+                    <MySelect
+                        value={limit}
+                        onChange={value => setLimit(value)}
+                        defaultValue={'Количество элементов на странице'}
+                        options={[
+                            {value:5,name:'5'},
+                            {value:10,name:'10'},
+                            {value:15,name:'15'},
+                            {value:20,name:'20'},
+                            {value:25,name:'25'},
+                            {value:-1,name:'Показать все'},
+                        ]}
+                    />
+                </div>
+
                 <MyButton onClick={() => setModal(true)}>
                     Добавить пост
                 </MyButton>
